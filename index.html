@@ -2,148 +2,69 @@
 <html lang="ro">
 <head>
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scor Rummy - de VAF</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --success: #27ae60;
-            --bg: #ecf0f1;
-            --white: #ffffff;
-            --border: #bdc3c7;
-            --atu: #f1c40f;
-            --danger: #e74c3c;
+            --primary: #2c3e50; --success: #27ae60; --bg: #ecf0f1;
+            --white: #ffffff; --border: #bdc3c7; --atu: #f1c40f; --danger: #e74c3c;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--primary);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-color: var(--bg); color: var(--primary); margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
         }
-
-        h1 { margin-top: 0; margin-bottom: 20px; font-size: 24px; }
-
         .container {
-            background-color: var(--white);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 600px;
-            box-sizing: border-box;
-            overflow-x: auto;
+            background-color: var(--white); padding: 20px; border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 600px; box-sizing: border-box;
         }
-
         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid var(--border); padding: 8px 4px; text-align: center; min-width: 65px; }
+        th { background-color: var(--primary); color: var(--white); }
+        .player-name { background: transparent; border: none; color: var(--white); font-weight: bold; font-size: 16px; text-align: center; width: 100%; }
+        .player-name::placeholder { color: rgba(255, 255, 255, 0.6); }
+        .dealer-badge { display: block; font-size: 12px; color: var(--atu); height: 14px; margin-top: 2px; }
         
-        th, td {
-            border: 1px solid var(--border);
-            padding: 8px 4px;
-            text-align: center;
-            min-width: 65px;
-            vertical-align: middle;
+        /* Modificări pentru inputuri și butonul de minus */
+        .input-group { display: flex; gap: 4px; margin-top: 5px; }
+        .btn-minus { 
+            background-color: #95a5a6; color: white; border: none; border-radius: 4px; 
+            font-weight: bold; font-size: 16px; padding: 0 8px; cursor: pointer;
+        }
+        .btn-minus:active { background-color: #7f8c8d; }
+        .score-input { 
+            width: 100%; padding: 8px 4px; border: 1px solid var(--border); 
+            border-radius: 4px; text-align: center; font-size: 16px; min-width: 0;
         }
 
-        th { background-color: var(--primary); color: var(--white); position: relative; }
-
-        .player-name {
-            background: transparent; border: none; color: var(--white);
-            font-weight: bold; font-size: 16px; text-align: center;
-            width: 100%; box-sizing: border-box;
-        }
-
-        .player-name:focus {
-            outline: 1px solid rgba(255,255,255,0.5);
-            background: rgba(255,255,255,0.1); border-radius: 4px;
-        }
-
-        .dealer-badge {
-            display: block; font-size: 12px; color: var(--atu);
-            height: 14px; margin-top: 2px;
-        }
-
-        .score-input {
-            width: 100%; padding: 8px 4px; box-sizing: border-box;
-            border: 1px solid var(--border); border-radius: 4px;
-            text-align: center; font-size: 16px; margin-top: 5px;
-        }
-
-        /* Stil special pentru input-urile din istoric */
-        .edit-input {
-            width: 100%; padding: 4px; box-sizing: border-box;
-            border: 1px dashed transparent; border-radius: 4px;
-            text-align: center; font-size: 16px; font-weight: 500;
-            background: transparent; color: var(--primary);
-            transition: 0.2s;
-        }
-        .edit-input:focus {
-            border-color: var(--primary); background: #f8f9fa; outline: none;
-        }
-
+        .edit-input { width: 100%; border: 1px dashed transparent; text-align: center; font-size: 16px; background: transparent; }
         .total-row { font-weight: bold; background-color: #e8f4f8; font-size: 18px; }
-
-        .btn-main {
-            background-color: var(--success); color: var(--white);
-            border: none; padding: 12px 20px; font-size: 16px;
-            font-weight: bold; border-radius: 8px; cursor: pointer;
-            width: 100%; transition: 0.2s;
-        }
-        .btn-main:hover { background-color: #219653; }
-
-        .btn-atu {
-            background-color: #ecf0f1; border: 1px solid #bdc3c7;
-            border-radius: 4px; padding: 4px; font-size: 12px;
-            cursor: pointer; width: 100%; color: #7f8c8d;
-            font-weight: bold; transition: 0.2s;
-        }
-        .btn-atu.active {
-            background-color: var(--atu); color: #000;
-            border-color: #f39c12; box-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
-        }
-
-        .badge-atu {
-            display: inline-block; background-color: var(--atu); color: #000;
-            padding: 2px 6px; border-radius: 4px; font-size: 10px;
-            font-weight: bold; margin-top: 4px; border: 1px solid #f39c12;
-        }
-
+        .btn-main { background-color: var(--success); color: var(--white); border: none; padding: 12px 20px; font-weight: bold; border-radius: 8px; width: 100%; cursor: pointer; }
+        .btn-atu { background-color: #ecf0f1; border: 1px solid #bdc3c7; border-radius: 4px; padding: 4px; font-size: 12px; width: 100%; color: #7f8c8d; cursor: pointer; }
+        .btn-atu.active { background-color: var(--atu); color: #000; }
+        .badge-atu { display: inline-block; background-color: var(--atu); color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-top: 4px; }
         .round-col { width: 40px; font-weight: bold; background-color: var(--bg); }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none;
-            align-items: center; justify-content: center; z-index: 1000;
-        }
-        .modal-content {
-            background: var(--white); padding: 25px; border-radius: 12px;
-            text-align: center; max-width: 90%; width: 350px;
-        }
-        .modal-buttons {
-            display: flex; flex-direction: column; gap: 10px; margin-top: 20px;
-        }
-        .btn-modal {
-            background-color: var(--primary); color: var(--white); border: none;
-            padding: 10px; border-radius: 6px; font-size: 16px; cursor: pointer;
-        }
-        .btn-modal:hover { background-color: #34495e; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--white); padding: 25px; border-radius: 12px; text-align: center; width: 320px; }
+        .modal-name-input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 6px; text-align: center; font-size: 16px; }
+        .modal-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .btn-modal { background-color: var(--primary); color: var(--white); border: none; padding: 12px 5px; border-radius: 6px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="modal-overlay" id="setupModal">
         <div class="modal-content">
-            <h2 style="margin-top: 0;">Cine face primul?</h2>
-            <p style="margin: 0; color: #7f8c8d;">Alege cine este primul dealer.</p>
-            <div class="modal-buttons">
+            <h2 style="margin-top: 0;">Joc Nou</h2>
+            <input type="text" id="modal-input-0" class="modal-name-input" placeholder="Nume Jucător 1" oninput="updateModalButtons()">
+            <input type="text" id="modal-input-1" class="modal-name-input" placeholder="Nume Jucător 2" oninput="updateModalButtons()">
+            <input type="text" id="modal-input-2" class="modal-name-input" placeholder="Nume Jucător 3" oninput="updateModalButtons()">
+            <input type="text" id="modal-input-3" class="modal-name-input" placeholder="Nume Jucător 4" oninput="updateModalButtons()">
+            <p>Cine dă cărțile primul?</p>
+            <div class="modal-buttons-grid">
                 <button class="btn-modal" id="modal-btn-0" onclick="setDealer(0)"></button>
                 <button class="btn-modal" id="modal-btn-1" onclick="setDealer(1)"></button>
                 <button class="btn-modal" id="modal-btn-2" onclick="setDealer(2)"></button>
@@ -153,235 +74,149 @@
     </div>
 
     <div class="container">
-        <h1>Scor Rummy - de VAF</h1>
-        
+        <h1>Scor Rummy</h1>
         <table>
             <thead>
                 <tr>
                     <th class="round-col">#</th>
-                    <th>
-                        <input type="text" class="player-name" id="nume0" value="Eva">
-                        <span class="dealer-badge" id="dealer0"></span>
-                    </th>
-                    <th>
-                        <input type="text" class="player-name" id="nume1" value="Vlad">
-                        <span class="dealer-badge" id="dealer1"></span>
-                    </th>
-                    <th>
-                        <input type="text" class="player-name" id="nume2" value="Lori">
-                        <span class="dealer-badge" id="dealer2"></span>
-                    </th>
-                    <th>
-                        <input type="text" class="player-name" id="nume3" value="Cris">
-                        <span class="dealer-badge" id="dealer3"></span>
-                    </th>
+                    <th><input type="text" class="player-name" id="nume0" placeholder="J1"><span class="dealer-badge" id="dealer0"></span></th>
+                    <th><input type="text" class="player-name" id="nume1" placeholder="J2"><span class="dealer-badge" id="dealer1"></span></th>
+                    <th><input type="text" class="player-name" id="nume2" placeholder="J3"><span class="dealer-badge" id="dealer2"></span></th>
+                    <th><input type="text" class="player-name" id="nume3" placeholder="J4"><span class="dealer-badge" id="dealer3"></span></th>
                 </tr>
                 <tr class="total-row">
-                    <td class="round-col">Total</td>
-                    <td id="total0">0</td>
-                    <td id="total1">0</td>
-                    <td id="total2">0</td>
-                    <td id="total3">0</td>
+                    <td>Total</td><td id="total0">0</td><td id="total1">0</td><td id="total2">0</td><td id="total3">0</td>
                 </tr>
             </thead>
-            
-            <tbody id="history-body">
-                </tbody>
-
+            <tbody id="history-body"></tbody>
             <tfoot>
                 <tr>
-                    <td class="round-col" style="font-size: 12px;">Scor &<br>Atu</td>
+                    <td class="round-col">Atu</td>
                     <td>
                         <button class="btn-atu" id="btn-atu-0" onclick="alegeAtu(0)">Atu</button>
-                        <input type="number" id="input0" class="score-input" placeholder="0">
+                        <div class="input-group">
+                            <button class="btn-minus" onclick="toggleMinus('input0')">±</button>
+                            <input type="text" id="input0" class="score-input" placeholder="0" inputmode="numeric">
+                        </div>
                     </td>
                     <td>
                         <button class="btn-atu" id="btn-atu-1" onclick="alegeAtu(1)">Atu</button>
-                        <input type="number" id="input1" class="score-input" placeholder="0">
+                        <div class="input-group">
+                            <button class="btn-minus" onclick="toggleMinus('input1')">±</button>
+                            <input type="text" id="input1" class="score-input" placeholder="0" inputmode="numeric">
+                        </div>
                     </td>
                     <td>
                         <button class="btn-atu" id="btn-atu-2" onclick="alegeAtu(2)">Atu</button>
-                        <input type="number" id="input2" class="score-input" placeholder="0">
+                        <div class="input-group">
+                            <button class="btn-minus" onclick="toggleMinus('input2')">±</button>
+                            <input type="text" id="input2" class="score-input" placeholder="0" inputmode="numeric">
+                        </div>
                     </td>
                     <td>
                         <button class="btn-atu" id="btn-atu-3" onclick="alegeAtu(3)">Atu</button>
-                        <input type="number" id="input3" class="score-input" placeholder="0">
+                        <div class="input-group">
+                            <button class="btn-minus" onclick="toggleMinus('input3')">±</button>
+                            <input type="text" id="input3" class="score-input" placeholder="0" inputmode="numeric">
+                        </div>
                     </td>
                 </tr>
             </tfoot>
         </table>
-
         <button class="btn-main" onclick="adaugaRunda()">Adaugă Runda</button>
-
-        <div style="margin-top: 20px;">
-            <button class="btn-main" onclick="reseteazaJocul()" style="background-color: var(--danger);">Resetează Jocul</button>
-        </div>
+        <button class="btn-main" onclick="reseteazaJocul()" style="background-color: var(--danger); margin-top: 10px;">Reset</button>
     </div>
 
     <script>
-        let istoricRunde = [];
-        let currentDealer = -1;
-        let currentAtu = -1; 
+        let istoricRunde = [], currentDealer = -1, currentAtu = -1;
 
-        window.onload = function() {
-            arataModalDealer();
-        };
+        window.onload = function() { arataModalDealer(); };
 
         function arataModalDealer() {
             document.getElementById('setupModal').style.display = 'flex';
+            updateModalButtons();
+        }
+
+        function updateModalButtons() {
             for (let i = 0; i < 4; i++) {
-                let nume = document.getElementById('nume' + i).value || ('Jucător ' + (i+1));
-                document.getElementById('modal-btn-' + i).innerText = nume;
+                let val = document.getElementById('modal-input-' + i).value.trim();
+                document.getElementById('modal-btn-' + i).innerText = val || ('Jucător ' + (i+1));
             }
         }
 
-        function setDealer(index) {
-            currentDealer = index;
+        function setDealer(idx) {
+            for (let i = 0; i < 4; i++) {
+                let val = document.getElementById('modal-input-' + i).value.trim();
+                document.getElementById('nume' + i).value = val || ('Jucător ' + (i+1));
+            }
+            currentDealer = idx;
             document.getElementById('setupModal').style.display = 'none';
             actualizeazaInterfata();
         }
 
-        function alegeAtu(index) {
-            if (currentAtu === index) {
-                currentAtu = -1;
+        function alegeAtu(idx) {
+            currentAtu = (currentAtu === idx) ? -1 : idx;
+            for(let i = 0; i < 4; i++) document.getElementById('btn-atu-' + i).classList.toggle('active', i === currentAtu);
+        }
+
+        // Funcția magică pentru butonul de minus
+        function toggleMinus(inputId) {
+            let input = document.getElementById(inputId);
+            let val = input.value;
+            if (val.startsWith('-')) {
+                input.value = val.substring(1); // Scoate minusul
+            } else if (val !== '') {
+                input.value = '-' + val; // Adaugă minusul la număr
             } else {
-                currentAtu = index;
-            }
-            
-            for(let i = 0; i < 4; i++) {
-                let btn = document.getElementById('btn-atu-' + i);
-                if(i === currentAtu) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                input.value = '-'; // Dacă e gol, pune doar minusul
             }
         }
 
         function adaugaRunda() {
-            const s0 = parseInt(document.getElementById('input0').value) || 0;
-            const s1 = parseInt(document.getElementById('input1').value) || 0;
-            const s2 = parseInt(document.getElementById('input2').value) || 0;
-            const s3 = parseInt(document.getElementById('input3').value) || 0;
-
-            if (s0 === 0 && s1 === 0 && s2 === 0 && s3 === 0 && 
-                document.getElementById('input0').value === '' && 
-                document.getElementById('input1').value === '') {
-                return;
-            }
-
-            istoricRunde.push({
-                scoruri: [s0, s1, s2, s3],
-                atu: currentAtu,
-                dealer: currentDealer
-            });
-
+            // parseInt transformă automat textul "-50" în numărul -50
+            let s = [0,1,2,3].map(i => parseInt(document.getElementById('input' + i).value) || 0);
+            if (s.every(val => val === 0)) return;
+            istoricRunde.push({ scoruri: s, atu: currentAtu, dealer: currentDealer });
             currentDealer = (currentDealer + 1) % 4;
-
-            for (let i = 0; i < 4; i++) {
-                document.getElementById('input' + i).value = '';
-            }
-            alegeAtu(-1); 
-
+            [0,1,2,3].forEach(i => document.getElementById('input' + i).value = '');
+            alegeAtu(-1);
             actualizeazaInterfata();
         }
 
-        // Funcția nouă care permite editarea pe loc și recalcularea
-        function editeazaScor(roundIndex, playerIndex, inputElement) {
-            // Dacă s-a șters tot din input, considerăm 0
-            const valoareNoua = parseInt(inputElement.value) || 0;
-            
-            // Actualizăm valoarea în istoric
-            istoricRunde[roundIndex].scoruri[playerIndex] = valoareNoua;
-            
-            // Recalculăm DOAR totalurile (fără a redesena tot tabelul ca să nu pierzi focusul)
+        function editeazaScor(rIdx, pIdx, el) {
+            istoricRunde[rIdx].scoruri[pIdx] = parseInt(el.value) || 0;
             recalculeazaTotaluri();
         }
 
         function recalculeazaTotaluri() {
-            let totaluri = [0, 0, 0, 0];
-            istoricRunde.forEach(runda => {
-                runda.scoruri.forEach((scor, pIndex) => {
-                    totaluri[pIndex] += scor;
-                });
-            });
-
-            for (let i = 0; i < 4; i++) {
-                document.getElementById('total' + i).innerText = totaluri[i];
-            }
+            let t = [0,0,0,0];
+            istoricRunde.forEach(r => r.scoruri.forEach((s, i) => t[i] += s));
+            [0,1,2,3].forEach(i => document.getElementById('total' + i).innerText = t[i]);
         }
 
         function actualizeazaInterfata() {
             const tbody = document.getElementById('history-body');
             tbody.innerHTML = '';
-            
-            istoricRunde.forEach((runda, index) => {
-                const tr = document.createElement('tr');
-                
-                const tdIndex = document.createElement('td');
-                tdIndex.className = 'round-col';
-                tdIndex.innerText = index + 1;
-                tr.appendChild(tdIndex);
-
-                runda.scoruri.forEach((scor, pIndex) => {
-                    const td = document.createElement('td');
-                    
-                    // Cream un input pentru ca scorul să poată fi corectat oricând
-                    const inputEdit = document.createElement('input');
-                    inputEdit.type = 'number';
-                    inputEdit.className = 'edit-input';
-                    inputEdit.value = scor;
-                    // oninput va declanșa recalcularea exact în momentul în care tastezi o cifră
-                    inputEdit.oninput = function() { editeazaScor(index, pIndex, this); };
-                    
-                    td.appendChild(inputEdit);
-                    
-                    if (runda.atu === pIndex) {
-                        const atuBadge = document.createElement('div');
-                        atuBadge.className = 'badge-atu';
-                        atuBadge.innerText = 'Atu';
-                        td.appendChild(atuBadge);
-                    }
-                    
-                    tr.appendChild(td);
-                });
-
+            istoricRunde.forEach((r, idx) => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td class="round-col">${idx+1}</td>` + r.scoruri.map((s, pi) => `
+                    <td>
+                        <input type="text" inputmode="numeric" class="edit-input" value="${s}" oninput="editeazaScor(${idx}, ${pi}, this)">
+                        ${r.atu === pi ? '<div class="badge-atu">Atu</div>' : ''}
+                    </td>`).join('');
                 tbody.appendChild(tr);
             });
-
             recalculeazaTotaluri();
-
-            for (let i = 0; i < 4; i++) {
-                const dealerBadge = document.getElementById('dealer' + i);
-                if (i === currentDealer) {
-                    dealerBadge.innerText = "🃏 Dealer";
-                } else {
-                    dealerBadge.innerText = "";
-                }
-            }
+            [0,1,2,3].forEach(i => document.getElementById('dealer' + i).innerText = (i === currentDealer ? "🃏 Dealer" : ""));
         }
 
         function reseteazaJocul() {
-            if(confirm("Sigur vrei să ștergi tot istoricul și să începi un joc nou? Numele vor fi păstrate.")) {
-                istoricRunde = [];
-                currentAtu = -1;
-                alegeAtu(-1); 
-                for (let i = 0; i < 4; i++) {
-                    document.getElementById('input' + i).value = '';
-                }
-                arataModalDealer(); 
-                actualizeazaInterfata();
-            }
+            if(confirm("Joc nou?")) { istoricRunde = []; arataModalDealer(); actualizeazaInterfata(); }
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); });
         }
     </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then((reg) => console.log('Service Worker înregistrat cu succes!', reg))
-        .catch((err) => console.log('Eroare la înregistrare:', err));
-    });
-  }
-</script>
 </body>
 </html>
