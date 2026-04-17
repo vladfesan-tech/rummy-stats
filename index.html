@@ -26,12 +26,20 @@
         /* REPARAȚIE LĂȚIME TABEL */
         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed; }
         
-        /* Sticky Header */
+       /* Sticky Header */
         thead tr:first-child th {
-            position: sticky; top: -10px; z-index: 10; background-color: var(--primary);
+            position: sticky; 
+            top: 0; /* Oprește header-ul exact sus, fără să mai taie din el */
+            z-index: 10; 
+            background-color: var(--primary);
+            padding-top: 10px; /* Adaugă un pic de spațiu vizual deasupra numelor */
         }
         .total-row td {
-            position: sticky; top: 48px; z-index: 9; background-color: #e8f4f8 !important; border-bottom: 2px solid var(--border);
+            position: sticky; 
+            top: 46px; /* Ajustat ca să stea perfect lipit sub noul rând de nume. Dacă se suprapun un pic, poți face 48px sau 50px */
+            z-index: 9; 
+            background-color: #e8f4f8 !important; 
+            border-bottom: 2px solid var(--border);
         }
 
         /* Optimizare spațiu celule */
