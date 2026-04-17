@@ -151,15 +151,23 @@
 
         function updateModalButtons() {
             for (let i = 0; i < 4; i++) {
-                let val = document.getElementById('modal-input-' + i).value.trim();
-                document.getElementById('modal-btn-' + i).innerText = val || ('Jucător ' + (i+1));
+                let input = document.getElementById('modal-input-' + i);
+                let val = input.value.trim();
+                // Dacă e gol, preia textul din placeholder (ex: Eva), altfel pune Jucător
+                let numeDefault = input.getAttribute('placeholder') || ('Jucător ' + (i+1));
+                
+                document.getElementById('modal-btn-' + i).innerText = val || numeDefault;
             }
         }
 
         function setDealer(idx) {
             for (let i = 0; i < 4; i++) {
-                let val = document.getElementById('modal-input-' + i).value.trim();
-                document.getElementById('nume' + i).value = val || ('Jucător ' + (i+1));
+                let input = document.getElementById('modal-input-' + i);
+                let val = input.value.trim();
+                let numeDefault = input.getAttribute('placeholder') || ('Jucător ' + (i+1));
+                
+                // Trimite numele în tabelul principal
+                document.getElementById('nume' + i).value = val || numeDefault;
             }
             currentDealer = idx;
             document.getElementById('setupModal').style.display = 'none';
