@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v4_cache_scor';
+const CACHE_NAME = 'v5_cache_scor';
 // Adaugă aici TOATE fișierele pe care vrei să le salvezi offline
 const ASSETS_TO_CACHE = [
   './',
